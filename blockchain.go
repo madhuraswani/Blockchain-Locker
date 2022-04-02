@@ -45,3 +45,19 @@ func CreateBlockchain(difficulty int) Blockchain {
 		difficulty,
 	}
 }
+
+func (b *Blockchain) addBlock(from, to string, amount float64) {
+	blockData := map[string]interface{}{
+		"from":   from,
+		"to":     to,
+		"amount": amount,
+	}
+	lastBlock := b.chain[len(b.chain)-1]
+	newBlock := Block{
+		data:         blockData,
+		previousHash: lastBlock.hash,
+		timestamp:    time.Now(),
+	}
+	newBlock.mine(b.difficulty)
+	b.chain = append(b.chain, newBlock)
+}
