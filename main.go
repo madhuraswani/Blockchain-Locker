@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 type Block struct {
@@ -142,13 +142,17 @@ func run() error {
 }
 
 func main() {
-	// create a new blockchain instance with a mining difficulty of 2
-	blockchain := CreateBlockchain(2)
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// record transactions on the blockchain for Alice, Bob, and John
-	blockchain.addBlock("Alice", "Bob", 5)
-	blockchain.addBlock("John", "Bob", 2)
+	go func() {
+		t := time.Now()
+		genesisBlock := Block{0, t.String(), 0, "", ""}
+		spew.Dump(genesisBlock)
+		Blockchain = append(Blockchain, genesisBlock)
+	}()
+	log.Fatal(run())
 
-	// check if the blockchain is valid; expecting true
-	fmt.Println(blockchain.isValid())
 }
