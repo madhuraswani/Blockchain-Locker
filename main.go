@@ -124,8 +124,8 @@ func makeMuxRouter() http.Handler {
 
 func run() error {
 	mux := makeMuxRouter()
-	httpAddr := os.Getenv("ADDR")
-	log.Println("Listening on ", os.Getenv("ADDR"))
+	httpAddr := os.Getenv("PORT")
+	log.Println("Listening on ", os.Getenv("PORT"))
 	s := &http.Server{
 		Addr:           ":" + httpAddr,
 		Handler:        mux,
@@ -143,6 +143,7 @@ func run() error {
 
 func main() {
 	err := godotenv.Load()
+	print(err)
 	if err != nil {
 		log.Fatal(err)
 	}
