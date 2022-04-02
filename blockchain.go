@@ -61,3 +61,14 @@ func (b *Blockchain) addBlock(from, to string, amount float64) {
 	newBlock.mine(b.difficulty)
 	b.chain = append(b.chain, newBlock)
 }
+
+func (b Blockchain) isValid() bool {
+	for i := range b.chain[1:] {
+		previousBlock := b.chain[i]
+		currentBlock := b.chain[i+1]
+		if currentBlock.hash != currentBlock.calculateHash() || currentBlock.previousHash != previousBlock.hash {
+			return false
+		}
+	}
+	return true
+}
