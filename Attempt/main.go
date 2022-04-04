@@ -53,24 +53,16 @@ func (chain *BlockChain) print() {
 }
 
 func main() {
+	var input string
 
 	chain := InitBlockChain()
-	i := 0
-	for i == 0 {
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
 		fmt.Print("Enter Data: ")
-		reader := bufio.NewReader(os.Stdin)
-		// ReadString will block until the delimiter is entered
-		input, err := reader.ReadString('\n')
-		if err != nil {
-
-			fmt.Println("An error occured while reading input. Please try again", err)
-			continue
-		}
+		input = scanner.Text()
 		if input == "" {
-			i = 1
-
+			break
 		}
-
 		chain.AddBlock(input)
 	}
 	chain.print()
